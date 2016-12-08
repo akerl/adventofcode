@@ -4,8 +4,9 @@ require 'pry'
 
 def validate(room, _, checksum)
   chars = room.tr('-','').chars.group_by(&:to_s).map { |k, v| [k, v.size] }
-  chars = chars.sort_by(&:first).sort { |a, b| b.last <=> a.last }.take(5)
-  chars.map(&:first).join == checksum
+  chars = chars.sort_by { |a, b| [-b, a] }
+  mine = chars.take(5).map(&:first).join
+  checksum == mine
 end
 
 rooms = File.readlines('input').map(&:chomp).map do |line|
