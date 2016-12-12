@@ -33,9 +33,6 @@ row = 0
 
 loop do
   cmd, *args = lines[row].split
-  puts "Register state: #{registers}"
-  puts "Operating on row: #{row}"
-  puts "Calling #{cmd} with #{args}"
   if calls.include? cmd.to_sym
     calls[cmd.to_sym].call(registers, *args)
     row += 1
