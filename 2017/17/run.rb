@@ -1,5 +1,4 @@
 require_relative '../utils.rb'
-require 'stackprof'
 
 class Spinlock
   attr_reader :state, :step, :pos, :new
