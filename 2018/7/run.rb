@@ -27,7 +27,7 @@ end
 puts res.join
 
 res = []
-workers = [[nil, 0]] * 5
+workers = [[nil, 0], [nil, 0], [nil, 0], [nil, 0], [nil, 0]]
 time = 0
 loop do
   0.upto(workers.size-1) do |index|
@@ -42,9 +42,9 @@ loop do
     end
     workers[index][0] = found ? found.first : nil
     next unless found
-    workers[index][1] = found.first.codepoints.first - 5
+    workers[index][1] = found.first.codepoints.first - 4
   end
   break if workers.all? { |x| x.first.nil? } && res.size > 0
   time += 1
 end
-puts time
+puts time-1
