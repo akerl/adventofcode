@@ -1,9 +1,13 @@
+def input_file
+  File.read('input').chomp
+end
+
 def input_lines
-  File.read('input').split("\n")
+  input_file.split("\n")
 end
 
 def input_with_delimiter(delimiter = ',')
-  File.read('input').split(delimiter)
+  input_file.split(delimiter)
 end
 
 def debug(msg)
