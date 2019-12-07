@@ -54,8 +54,11 @@ class Intcode
 
   def run_next_opcode
     func, args = parse_opcode
+    old_pos = @position
     @position += args.size + 1
-    return func.call(self, args)
+    res = func.call(self, args)
+    @position = old_pos unless res
+    res
   end
 
   def parse_opcode
@@ -93,7 +96,6 @@ INTCODE_METHODS = {
       a = args[0].val
       b = args[1].val
       c = args[2].pos
-      debug "Storing #{a} + #{b} at pos #{c}"
       obj.array[c] = a + b
     end
   ],
@@ -103,7 +105,6 @@ INTCODE_METHODS = {
       a = args[0].val
       b = args[1].val
       c = args[2].pos
-      debug "Storing #{a} * #{b} at pos #{c}"
       obj.array[c] = a * b
     end
   ],
@@ -111,8 +112,8 @@ INTCODE_METHODS = {
     1,
     proc do |obj, args|
       i = obj.input.shift
+      next false unless i
       a = args[0].pos
-      debug "Shifting #{i} to pos #{a}"
       obj.array[a] = i
     end
   ],
@@ -120,7 +121,6 @@ INTCODE_METHODS = {
     1,
     proc do |obj, args|
       a = args[0].val
-      debug "Outputting #{a}"
       obj.output << a.dup
     end
   ],
