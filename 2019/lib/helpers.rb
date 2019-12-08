@@ -3,7 +3,7 @@ def input_file
 end
 
 def input_lines
-  input_file.split("\n")
+  input_with_delimiter("\n")
 end
 
 def input_with_delimiter(delimiter = ',')
