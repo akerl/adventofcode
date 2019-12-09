@@ -21,6 +21,7 @@ class Intcode
     @input = input
     @output = []
     @position = 0
+    @rel_base = 0
   end
 
   def execute
@@ -40,6 +41,14 @@ class Intcode
 
   def input
     @input
+  end
+
+  def rel_base
+    @rel_base
+  end
+
+  def rel_base=(val)
+    @rel_base = val
   end
 
   def position
@@ -75,12 +84,18 @@ class Intcode
     return [] if count == 0
     (@position+1).upto(@position+count).map do |index|
       type = types.pop || '0'
-      if type == '0'
+      case type
+      when '0'
         pos = @array[index]
         val = @array[pos]
-      else
+      when '1'
         pos = nil
         val = @array[index]
+      when '2'
+        pos = @array[index] + @rel_base
+        val = @array[pos]
+      else
+        fail('unknown parameter mode')
       end
       Arg.new(pos, val)
     end
@@ -154,6 +169,13 @@ INTCODE_METHODS = {
       b = args[1].val
       c = args[2].pos
       obj.array[c] = a == b ? 1 : 0
+    end
+  ],
+  9 => [
+    1,
+    proc do |obj, args|
+      a = args[0].val
+      obj.rel_base += a
     end
   ],
   99 => [
