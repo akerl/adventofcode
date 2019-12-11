@@ -87,13 +87,13 @@ class Intcode
       case type
       when '0'
         pos = @array[index]
-        val = @array[pos]
+        val = @array[pos] || 0
       when '1'
         pos = nil
         val = @array[index]
       when '2'
         pos = @array[index] + @rel_base
-        val = @array[pos]
+        val = @array[pos] || 0
       else
         fail('unknown parameter mode')
       end
